@@ -12,8 +12,8 @@ function copy() {
     emit('close');
 }
 function download() {
-    const file = JSON.parse(shareCode.value)
-    window.open(file.link, '_blank')
+    const file = JSON.parse(shareCode.value);
+    window.open(file.link, '_blank');
     shareCode.value = '';
     emit('close');
 }
