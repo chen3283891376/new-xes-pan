@@ -62,8 +62,13 @@ export default defineConfig({
             '/api': {
                 target: 'https://chen123666888.pythonanywhere.com',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api/, '')
-            }
-        }
+                rewrite: path => path.replace(/^\/api/, ''),
+            },
+            '/xes/api': {
+                target: 'https://code.xueersi.com/api',
+                changeOrigin: true,
+                rewrite: path => path.replace(/^\/xes\/api/, ''),
+            },
+        },
     },
 });
