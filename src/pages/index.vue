@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import type { IFileData, IGetRes } from '@/interfaces/cloudpan';
 import ShareDialog from '@/components/ShareDialog.vue';
+import UploadDialog from '@/components/UploadDialog.vue';
 
 const userId = '13159581';
 const token = ref('');
@@ -14,6 +15,7 @@ const headers = ref([
 ]);
 
 const showDialog = ref(false);
+const showUploadDialog = ref(false);
 const shareDialogType = ref('mine');
 const selectedFile = ref<any>(null);
 
@@ -98,6 +100,26 @@ function closeShareDialog() {
     showDialog.value = false;
 }
 
+async function upload_finished(fileInfo: any) {
+    files.value.push(fileInfo);
+    showUploadDialog.value = false;
+
+    await fetch(`/api/set`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            key: `cloudpan-${userId}`,
+            value: {
+                files: files.value,
+                token: token.value,
+            },
+            token: token.value,
+        }),
+    });
+}
+
 onMounted(() => {
     fetch_pan_data();
 });
@@ -105,6 +127,10 @@ onMounted(() => {
 
 <template>
     <v-container>
+        <upload-dialog
+            :showDialog="showUploadDialog"
+            @finished="upload_finished"
+        ></upload-dialog>
         <v-card v-if="token !== ''">
             <v-card-text>
                 <v-data-table :headers="headers" :items="files">
@@ -145,7 +171,12 @@ onMounted(() => {
                                 border
                                 @click="openShareDialog(null, 'others')"
                             ></v-btn>
-                            <v-btn class="me-2" prepend-icon="mdi-plus" text="上传" border></v-btn>
+                            <v-btn
+                                class="me-2"
+                                prepend-icon="mdi-plus"
+                                text="上传" border
+                                @click="showUploadDialog = true"
+                            ></v-btn>
                         </v-toolbar>
                     </template>
                 </v-data-table>
