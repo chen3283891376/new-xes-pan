@@ -55,7 +55,7 @@ const calculateFileMD5 = async (file: File): Promise<string> => {
             }
         };
 
-        fileReader.onerror = err => reject(`MD5计算失败：${((err as unknown) as Error).message}`);
+        fileReader.onerror = err => reject(`MD5计算失败：${(err as unknown as Error).message}`);
         loadNextChunk();
     });
 };
@@ -94,7 +94,7 @@ const uploadFileToOss = async (file: File, params: UploadParam) => {
         Object.entries(params.headers).forEach(([key, value]) => {
             xhr.setRequestHeader(key, value);
         });
-        xhr.upload.onprogress = (e) => {
+        xhr.upload.onprogress = e => {
             if (e.lengthComputable) {
                 const uploadProgress = Math.floor((e.loaded / e.total) * 50);
                 progress.value = 50 + uploadProgress;
@@ -163,17 +163,17 @@ const handleFileSelect = async () => {
                     class="mb-4"
                 ></v-file-input>
 
-                <v-progress-linear
-                    v-if="isUploading"
-                    :value="progress"
-                    color="success"
-                    height="8"
-                    rounded
-                    class="mb-4"
-                >
+                <v-progress-linear v-if="isUploading" :value="progress" color="success" height="8" rounded class="mb-4">
                 </v-progress-linear>
 
-                <v-alert v-if="uploadUrl" type="success" density="compact" closable @close="uploadUrl = ''" class="mb-4">
+                <v-alert
+                    v-if="uploadUrl"
+                    type="success"
+                    density="compact"
+                    closable
+                    @close="uploadUrl = ''"
+                    class="mb-4"
+                >
                     <div class="d-flex align-center gap-2">
                         <span>上传成功！</span>
                     </div>
@@ -195,5 +195,4 @@ const handleFileSelect = async () => {
     </v-dialog>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -127,10 +127,7 @@ onMounted(() => {
 
 <template>
     <v-container>
-        <upload-dialog
-            :showDialog="showUploadDialog"
-            @finished="upload_finished"
-        ></upload-dialog>
+        <upload-dialog :showDialog="showUploadDialog" @finished="upload_finished"></upload-dialog>
         <v-card v-if="token !== ''">
             <v-card-text>
                 <v-data-table :headers="headers" :items="files">
@@ -174,7 +171,8 @@ onMounted(() => {
                             <v-btn
                                 class="me-2"
                                 prepend-icon="mdi-plus"
-                                text="上传" border
+                                text="上传"
+                                border
                                 @click="showUploadDialog = true"
                             ></v-btn>
                         </v-toolbar>
