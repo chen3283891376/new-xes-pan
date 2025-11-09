@@ -100,24 +100,26 @@ function closeShareDialog() {
     showDialog.value = false;
 }
 
-async function upload_finished(fileInfo: IFile) {
-    files.value.push(fileInfo);
+async function upload_finished(fileInfo: IFile | null) {
     showUploadDialog.value = false;
+    if (fileInfo) {
+        files.value.push(fileInfo);
 
-    await fetch(`/api/set`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            key: `cloudpan-${userId}`,
-            value: {
-                files: files.value,
-                token: token.value,
+        await fetch(`/api/set`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-            token: token.value,
-        }),
-    });
+            body: JSON.stringify({
+                key: `cloudpan-${userId}`,
+                value: {
+                    files: files.value,
+                    token: token.value,
+                },
+                token: token.value,
+            }),
+        });
+    }
 }
 
 onMounted(() => {

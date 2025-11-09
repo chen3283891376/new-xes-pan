@@ -21,7 +21,7 @@ const uploadUrl = ref('');
 const errorMsg = ref('');
 const isUploading = computed(() => progress.value > 0 && progress.value < 100);
 const emit = defineEmits<{
-    finished: [{ name: string; size: string; link: string; time: string }];
+    finished: [{ name: string; size: string; link: string; time: string } | null];
 }>();
 
 const CHUNK_SIZE = 10 * 1024 * 1024;
@@ -191,6 +191,11 @@ const handleFileSelect = async () => {
                     <span>{{ errorMsg }}</span>
                 </v-alert>
             </v-card-text>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn text @click="emit('finished', null)">取消</v-btn>
+            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
