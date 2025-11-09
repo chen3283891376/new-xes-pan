@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import { defineProps, defineEmits, ref } from 'vue';
+import type { IFile } from '@/interfaces/cloudpan';
+
 const props = defineProps<{
-    file?: any;
+    file?: IFile | null;
     shareType?: string;
     showDialog: boolean;
 }>();

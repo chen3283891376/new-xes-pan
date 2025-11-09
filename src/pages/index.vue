@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import type { IFileData, IGetRes } from '@/interfaces/cloudpan';
+import type { IFileData, IGetRes, IFile } from '@/interfaces/cloudpan';
 import ShareDialog from '@/components/ShareDialog.vue';
 import UploadDialog from '@/components/UploadDialog.vue';
 
@@ -17,7 +17,7 @@ const headers = ref([
 const showDialog = ref(false);
 const showUploadDialog = ref(false);
 const shareDialogType = ref('mine');
-const selectedFile = ref<any>(null);
+const selectedFile = ref<IFile | null>(null);
 
 const fetch_pan_data = async () => {
     const response = await fetch(`/api/get?key=cloudpan-${userId}`);
@@ -64,11 +64,11 @@ const handle_register = async () => {
     });
 };
 
-function download_file(item: any) {
+function download_file(item: IFile) {
     window.open(item.link, '_blank');
 }
 
-async function delete_file(item: any) {
+async function delete_file(item: IFile) {
     if (confirm('确认删除该文件吗？')) {
         files.value = files.value.filter(i => i !== item);
         await fetch(`/api/set`, {
@@ -88,7 +88,7 @@ async function delete_file(item: any) {
     }
 }
 
-function openShareDialog(item: any | null, type: string) {
+function openShareDialog(item: IFile | null, type: string) {
     if (item) {
         selectedFile.value = item;
     }
@@ -100,7 +100,7 @@ function closeShareDialog() {
     showDialog.value = false;
 }
 
-async function upload_finished(fileInfo: any) {
+async function upload_finished(fileInfo: IFile) {
     files.value.push(fileInfo);
     showUploadDialog.value = false;
 

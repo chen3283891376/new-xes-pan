@@ -1,6 +1,13 @@
+export interface IFile {
+    name: string;
+    link: string;
+    size: string;
+    time: string;
+}
+
 export interface IFileData {
     token: string;
-    files: any[];
+    files: IFile[];
 }
 
 export interface IGetRes {
