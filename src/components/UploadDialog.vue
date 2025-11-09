@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, defineProps, defineEmits } from 'vue';
 import SparkMD5 from 'spark-md5';
 import { byteToSize } from '@/utils/converter';
 
