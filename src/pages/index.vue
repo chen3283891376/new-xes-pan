@@ -4,7 +4,7 @@ import type { IFileData, IGetRes, IFile } from '@/interfaces/cloudpan';
 import ShareDialog from '@/components/ShareDialog.vue';
 import UploadDialog from '@/components/UploadDialog.vue';
 
-const userId = '13159581';
+const userId = prompt('请输入您的用户（没有就瞎写一个，要记住，相当于密码，太简单了会被别人猜到（因此安全性不高））');
 const token = ref('');
 const files = ref([] as IFileData['files']);
 const headers = ref([
