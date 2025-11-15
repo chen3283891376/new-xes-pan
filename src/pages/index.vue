@@ -1,10 +1,20 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, type VNodeRef } from 'vue';
 import type { IFileData, IGetRes, IFile } from '@/interfaces/cloudpan';
 import ShareDialog from '@/components/ShareDialog.vue';
 import UploadDialog from '@/components/UploadDialog.vue';
 
-const userId = prompt('请输入您的用户（没有就瞎写一个，要记住，相当于密码，太简单了会被别人猜到（因此安全性不高））');
+// const userId = prompt('请输入您的用户（没有就瞎写一个，要记住，相当于密码，太简单了会被别人猜到（因此安全性不高））');
+// const userId = localStorage.getItem('userId') || '123456';
+let userId: unknown;
+if (localStorage.getItem('userId')) {
+    userId = localStorage.getItem('userId');
+} else {
+    userId = prompt('请输入您的用户（没有就瞎写一个，要记住，相当于密码，太简单了会被别人猜到（因此安全性不高））');
+    if (userId) {
+        localStorage.setItem('userId', userId as string);
+    }
+}
 const token = ref('');
 const files = ref([] as IFileData['files']);
 const headers = ref([
@@ -64,8 +74,32 @@ const handle_register = async () => {
     });
 };
 
-function download_file(item: IFile) {
-    window.open(item.link, '_blank');
+function downloadFile(item: IFile) {
+    fetch(item.link, {
+        headers: new Headers({
+            Origin: location.origin,
+        }),
+        mode: 'cors',
+    })
+    .then(res => {
+  		if(res.status == 200) {
+     		return res.blob()
+        }
+        throw new Error(`status: ${res.status}.`)
+  	})
+    .then(blob => {
+      download_file(blob, item.name)
+    })
+}
+function download_file(blob: Blob, filename: string) {
+    const a = document.createElement('a')
+    a.download = filename
+    const blobUrl = URL.createObjectURL(blob)
+    a.href = blobUrl
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(blobUrl)
 }
 
 async function delete_file(item: IFile) {
@@ -144,7 +178,7 @@ onMounted(() => {
                             color="medium-emphasis"
                             icon="mdi-download"
                             size="small"
-                            @click="download_file(item)"
+                            @click="downloadFile(item)"
                         ></v-icon-btn>
                         <v-icon-btn
                             color="medium-emphasis"
