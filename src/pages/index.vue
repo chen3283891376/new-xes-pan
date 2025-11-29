@@ -81,25 +81,25 @@ function downloadFile(item: IFile) {
         }),
         mode: 'cors',
     })
-    .then(res => {
-  		if(res.status == 200) {
-     		return res.blob()
-        }
-        throw new Error(`status: ${res.status}.`)
-  	})
-    .then(blob => {
-      download_file(blob, item.name)
-    })
+        .then(res => {
+            if (res.status == 200) {
+                return res.blob();
+            }
+            throw new Error(`status: ${res.status}.`);
+        })
+        .then(blob => {
+            download_file(blob, item.name);
+        });
 }
 function download_file(blob: Blob, filename: string) {
-    const a = document.createElement('a')
-    a.download = filename
-    const blobUrl = URL.createObjectURL(blob)
-    a.href = blobUrl
-    document.body.appendChild(a)
-    a.click()
-    a.remove()
-    URL.revokeObjectURL(blobUrl)
+    const a = document.createElement('a');
+    a.download = filename;
+    const blobUrl = URL.createObjectURL(blob);
+    a.href = blobUrl;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(blobUrl);
 }
 
 async function delete_file(item: IFile) {
