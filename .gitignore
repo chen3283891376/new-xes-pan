@@ -32,3 +32,5 @@ coverage
 /react-ver
 
 py-server/
+# Local Netlify folder
+.netlify/

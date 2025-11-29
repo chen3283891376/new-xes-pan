@@ -7,7 +7,7 @@ import UploadDialog from '@/components/UploadDialog.vue';
 // const userId = prompt('请输入您的用户（没有就瞎写一个，要记住，相当于密码，太简单了会被别人猜到（因此安全性不高））');
 // const userId = localStorage.getItem('userId') || '123456';
 let userId: unknown;
-if (localStorage.getItem('userId')) {
+if (localStorage.getItem('userId') !== null) {
     userId = localStorage.getItem('userId');
 } else {
     userId = prompt('请输入您的用户（没有就瞎写一个，要记住，相当于密码，太简单了会被别人猜到（因此安全性不高））');

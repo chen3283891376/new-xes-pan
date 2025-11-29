@@ -1,39 +1,24 @@
 [build]
   publish = "dist"
-  command = "npm run build"
+  command = "bun run build"
 
 [[redirects]]
   from = "/api/*"
   to = "https://chen123666888.pythonanywhere.com/:splat"
   status = 200
   force = true
-  headers = {
-    "Host" = "chen123666888.pythonanywhere.com",
-    "Access-Control-Allow-Origin" = "*",
-    "Access-Control-Allow-Methods" = "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers" = "Content-Type, Authorization"
-  }
+  headers = { "Host" = "chen123666888.pythonanywhere.com", "Access-Control-Allow-Origin" = "*", "Access-Control-Allow-Methods" = "GET, POST, PUT, DELETE, OPTIONS", "Access-Control-Allow-Headers" = "Content-Type, Authorization" }
 
 [[redirects]]
   from = "/xes/api/*"
   to = "https://code.xueersi.com/api/:splat"
   status = 200
   force = true
-  headers = {
-    "Host" = "code.xueersi.com",
-    "Access-Control-Allow-Origin" = "*",
-    "Access-Control-Allow-Methods" = "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers" = "Content-Type, Authorization"
-  }
+  headers = { "Host" = "code.xueersi.com", "Access-Control-Allow-Origin" = "*", "Access-Control-Allow-Methods" = "GET, POST, PUT, DELETE, OPTIONS", "Access-Control-Allow-Headers" = "Content-Type, Authorization" }
 
 [[redirects]]
   from = "/*"
   to = "/*"
   method = "OPTIONS"
   status = 200
-  headers = {
-    "Access-Control-Allow-Origin" = "*",
-    "Access-Control-Allow-Methods" = "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers" = "Content-Type, Authorization",
-    "Access-Control-Max-Age" = "86400"
-  }
+  headers = { "Access-Control-Allow-Origin" = "*", "Access-Control-Allow-Methods" = "GET, POST, PUT, DELETE, OPTIONS", "Access-Control-Allow-Headers" = "Content-Type, Authorization", "Access-Control-Max-Age" = "86400" }
