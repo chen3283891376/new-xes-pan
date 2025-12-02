@@ -4,9 +4,10 @@ import type { IFileData, IGetRes, IFile } from '@/interfaces/cloudpan';
 import ShareDialog from '@/components/ShareDialog.vue';
 import UploadDialog from '@/components/UploadDialog.vue';
 
-// const userId = prompt('请输入您的用户（没有就瞎写一个，要记住，相当于密码，太简单了会被别人猜到（因此安全性不高））');
-// const userId = localStorage.getItem('userId') || '123456';
-let userId: unknown;
+const userId = ref<string | null>(null);
+if (localStorage.getItem('userId') !== null) {
+    userId.value = localStorage.getItem('userId') as string;
+};
 const token = ref('');
 const files = ref([] as IFileData['files']);
 const headers = ref([
@@ -22,7 +23,7 @@ const shareDialogType = ref('mine');
 const selectedFile = ref<IFile | null>(null);
 
 const fetch_pan_data = async () => {
-    const response = await fetch(`/api/get?key=cloudpan-${userId}`);
+    const response = await fetch(`/api/get?key=cloudpan-${userId.value}`);
     const data: IGetRes = await response.json();
     if (data.status === 'error') {
         alert('很好，这是你第一次使用云盘，点击确定，我们将为您注册');
@@ -40,7 +41,7 @@ const handle_register = async () => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            key: `cloudpan-${userId}`,
+            key: `cloudpan-${userId.value}`,
             value: {
                 files: [],
                 token: '',
@@ -56,7 +57,7 @@ const handle_register = async () => {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            key: `cloudpan-${userId}`,
+            key: `cloudpan-${userId.value}`,
             value: {
                 files: [],
                 token: data.token,
@@ -103,7 +104,7 @@ async function delete_file(item: IFile) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                key: `cloudpan-${userId}`,
+                key: `cloudpan-${userId.value}`,
                 value: {
                     files: files.value,
                     token: token.value,
@@ -137,7 +138,7 @@ async function upload_finished(fileInfo: IFile | null) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                key: `cloudpan-${userId}`,
+                key: `cloudpan-${userId.value}`,
                 value: {
                     files: files.value,
                     token: token.value,
@@ -147,18 +148,6 @@ async function upload_finished(fileInfo: IFile | null) {
         });
     }
 }
-
-onMounted(async () => {
-    if (localStorage.getItem('userId') !== null) {
-        userId = localStorage.getItem('userId');
-    } else {
-        userId = prompt('请输入您的用户（没有就瞎写一个，要记住，相当于密码，太简单了会被别人猜到（因此安全性不高））');
-        if (userId) {
-            localStorage.setItem('userId', userId as string);
-        }
-    }
-    fetch_pan_data();
-});
 </script>
 
 <template>
@@ -216,7 +205,15 @@ onMounted(async () => {
                 </v-data-table>
             </v-card-text>
         </v-card>
-        <v-alert v-else> 加载中... </v-alert>
+        <v-card v-else>
+            <v-card-text>
+                <v-text-field
+                    label="请输入您的用户（没有就瞎写一个，要记住，相当于密码，太简单了会被别人猜到（因此安全性不高））"
+                    v-model="userId"
+                ></v-text-field>
+                <v-btn color="primary" @click="fetch_pan_data()" :disabled="userId === null || userId === ''">注册</v-btn>
+            </v-card-text>
+        </v-card>
     </v-container>
 </template>
 
