@@ -7,7 +7,7 @@ import UploadDialog from '@/components/UploadDialog.vue';
 const userId = ref<string | null>(null);
 if (localStorage.getItem('userId') !== null) {
     userId.value = localStorage.getItem('userId') as string;
-};
+}
 const token = ref('');
 const files = ref([] as IFileData['files']);
 const headers = ref([
@@ -71,10 +71,8 @@ function downloadFile(item: IFile) {
     window.open(
         `https://livefile.xesimg.com/programme/python_assets/844958913c304c040803a9d7f79f898e.html?name=${
             item.name
-        }&file=${
-            item.link.split('python_assets/')[1]
-        }`
-        , '_blank'
+        }&file=${item.link.split('python_assets/')[1]}`,
+        '_blank',
     );
 }
 
@@ -194,7 +192,9 @@ async function upload_finished(fileInfo: IFile | null) {
                     label="请输入您的用户（没有就瞎写一个，要记住，相当于密码，太简单了会被别人猜到（因此安全性不高））"
                     v-model="userId"
                 ></v-text-field>
-                <v-btn color="primary" @click="fetch_pan_data()" :disabled="userId === null || userId === ''">注册</v-btn>
+                <v-btn color="primary" @click="fetch_pan_data()" :disabled="userId === null || userId === ''"
+                    >注册</v-btn
+                >
             </v-card-text>
         </v-card>
     </v-container>

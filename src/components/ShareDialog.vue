@@ -18,10 +18,8 @@ function download() {
     window.open(
         `https://livefile.xesimg.com/programme/python_assets/844958913c304c040803a9d7f79f898e.html?name=${
             file.name
-        }&file=${
-            file.link.split('python_assets/')[1]
-        }`
-        , '_blank'
+        }&file=${file.link.split('python_assets/')[1]}`,
+        '_blank',
     );
     shareCode.value = '';
     emit('close');
