@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Downloader</title>
+    </head>
+    <body>
+        <script>
+            const queryParams = new URLSearchParams(window.location.search);
+            const name = decodeURIComponent(queryParams.get('name') || '');
+            const file = decodeURIComponent(queryParams.get('file') || '');
+            const url = `https://livefile.xesimg.com/programme/python_assets/${file}`;
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            window.opener = null;
+            window.close();
+        </script>
+    </body>
+</html>

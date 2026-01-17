@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { defineProps, defineEmits, ref } from 'vue';
+import { ref } from 'vue';
 import type { IFile } from '@/interfaces/cloudpan';
 
 const props = defineProps<{
@@ -15,7 +15,14 @@ function copy() {
 }
 function download() {
     const file = JSON.parse(shareCode.value);
-    window.open(file.link, '_blank');
+    window.open(
+        `https://livefile.xesimg.com/programme/python_assets/844958913c304c040803a9d7f79f898e.html?name=${
+            file.name
+        }&file=${
+            file.link.split('python_assets/')[1]
+        }`
+        , '_blank'
+    );
     shareCode.value = '';
     emit('close');
 }
