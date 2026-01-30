@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineProps, defineEmits } from 'vue';
+import { ref, computed } from 'vue';
 import SparkMD5 from 'spark-md5';
 import { byteToSize } from '@/utils/converter';
 
@@ -19,7 +19,7 @@ const selectedFile = ref<File | null>(null);
 const progress = ref(0);
 const uploadUrl = ref('');
 const errorMsg = ref('');
-const isUploading = computed(() => progress.value > 0 && progress.value < 100);
+const isUploading = ref(false);
 const emit = defineEmits<{
     finished: [{ name: string; size: string; link: string; time: string } | null];
 }>();
@@ -45,8 +45,6 @@ const calculateFileMD5 = async (file: File): Promise<string> => {
         fileReader.onload = e => {
             spark.append(e.target?.result as ArrayBuffer);
             chunkIndex++;
-
-            progress.value = Math.floor(((chunkIndex * CHUNK_SIZE) / file.size) * 50);
 
             if (chunkIndex * CHUNK_SIZE < file.size) {
                 loadNextChunk();
@@ -94,12 +92,12 @@ const uploadFileToOss = async (file: File, params: UploadParam) => {
         Object.entries(params.headers).forEach(([key, value]) => {
             xhr.setRequestHeader(key, value);
         });
-        xhr.upload.onprogress = e => {
+        xhr.upload.addEventListener('progress', e => {
             if (e.lengthComputable) {
-                const uploadProgress = Math.floor((e.loaded / e.total) * 50);
-                progress.value = 50 + uploadProgress;
+                const percent = Math.round((e.loaded / e.total) * 100);
+                progress.value = percent;
             }
-        };
+        });
         xhr.onload = () => {
             if (xhr.status >= 200 && xhr.status < 300) {
                 resolve();
@@ -128,6 +126,7 @@ const handleFileSelect = async () => {
     try {
         const md5 = await calculateFileMD5(file);
         const uploadParams = await getOssUploadParams(file.name, md5);
+        isUploading.value = true;
         await uploadFileToOss(file, uploadParams);
         uploadUrl.value = uploadParams.url;
 
@@ -143,6 +142,7 @@ const handleFileSelect = async () => {
         errorMsg.value = (err as Error).message;
         progress.value = 0;
     } finally {
+        isUploading.value = false;
         selectedFile.value = null;
     }
 };
@@ -163,7 +163,14 @@ const handleFileSelect = async () => {
                     class="mb-4"
                 ></v-file-input>
 
-                <v-progress-linear v-if="isUploading" :value="progress" color="success" height="8" rounded class="mb-4">
+                <v-progress-linear
+                    v-if="isUploading"
+                    v-model="progress"
+                    color="success"
+                    height="8"
+                    rounded
+                    class="mb-4"
+                >
                 </v-progress-linear>
 
                 <v-alert

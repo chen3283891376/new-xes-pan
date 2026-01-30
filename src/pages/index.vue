@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, type VNodeRef } from 'vue';
+import { ref } from 'vue';
 import type { IFileData, IGetRes, IFile } from '@/interfaces/cloudpan';
 import ShareDialog from '@/components/ShareDialog.vue';
 import UploadDialog from '@/components/UploadDialog.vue';
