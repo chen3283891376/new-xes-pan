@@ -33,7 +33,7 @@
         "sass-embedded": "^1.92.1",
         "typescript": "~5.9.2",
         "unplugin-fonts": "^1.4.0",
-        "unplugin-vue-components": "^29.0.0",
+        "unplugin-vue-components": "^31.0.0",
         "unplugin-vue-router": "^0.19.2",
         "vite": "^7.1.5",
         "vite-plugin-vuetify": "^2.1.2",
