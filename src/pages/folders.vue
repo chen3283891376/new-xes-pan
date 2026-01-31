@@ -19,7 +19,7 @@ function addFolder() {
 <template>
     <v-container>
         <v-alert type="warning" class="mb-3">
-            本功能依赖于unybhgfd(刘行之)的XesChat的网盘功能，若没有安装可查看
+            本功能依赖于unybhgfd(刘行知)的XesChat的网盘功能，若没有安装可查看
             <a href="https://gitee.com/unybhgfd/xeschat_admin/releases/tag/v2025-11-24">XesChat Gitee的release</a>
             下载（哦对，这个功能依赖本地缓存存储，懒得搞云了，慎用吧）
         </v-alert>
