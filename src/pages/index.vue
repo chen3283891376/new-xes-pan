@@ -181,6 +181,14 @@ async function upload_finished(fileInfo: IFile | null) {
                                 border
                                 @click="showUploadDialog = true"
                             ></v-btn>
+                            <router-link to="/folders">
+                                <v-btn
+                                    class="me-2"
+                                    prepend-icon="mdi-folder-multiple-outline"
+                                    text="打开文件夹模式"
+                                    border
+                                />
+                            </router-link>
                         </v-toolbar>
                     </template>
                 </v-data-table>
