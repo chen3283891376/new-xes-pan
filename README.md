@@ -73,6 +73,7 @@ new-xes-pan/
 │   ├── pages/              # 页面组件
 │   │   ├── folders.vue     # 文件夹管理页面
 │   │   └── index.vue       # 首页
+|   |   └── upload.vue      # 通用外部上传组件
 │   ├── plugins/            # 插件配置
 │   │   ├── index.ts        # 插件入口
 │   │   └── vuetify.ts      # Vuetify 插件配置
